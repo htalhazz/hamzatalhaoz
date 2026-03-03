@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import dbConnect from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import Quote from "@/lib/Quote";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 export async function GET() {
-    await dbConnect();
+    await connectDB();
 
     // Sadece yetkili adminler teklifleri görebilir
     const session = await getServerSession(authOptions);
@@ -22,7 +22,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    await dbConnect();
+    await connectDB();
     try {
         const body = await request.json();
         const newQuote = await Quote.create(body);
