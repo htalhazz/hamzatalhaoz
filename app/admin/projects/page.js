@@ -39,67 +39,104 @@ export default function AdminProjects() {
         </Link>
       </div>
 
-      <div className="flex flex-col gap-4">
-        {projects.map((project) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {projects.map((project, index) => (
           <div
             key={project.slug}
-            className="bg-white border-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="group relative overflow-hidden bg-white border-2 border-black transition-all duration-300 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(220,38,38,1)] flex flex-col h-[300px] md:h-[400px]"
           >
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className={`w-12 h-12 ${project.accent || "bg-black"} shrink-0 flex items-center justify-center`}>
-                <span className="text-white/30 font-bold text-xs uppercase">{project.tag?.charAt(0)}</span>
-              </div>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-black text-sm uppercase tracking-wide truncate">
-                    {project.title}
-                  </h3>
-                  {project.featured && (
-                    <span className="text-[10px] font-bold uppercase tracking-widest bg-yellow-500 text-black px-2 py-0.5 shrink-0">
-                      Featured
-                    </span>
-                  )}
+            {/* Arka Plan / Resim Alanı */}
+            <div className="absolute inset-0 z-0 bg-white">
+              {project.images && project.images.length > 0 ? (
+                <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              ) : (
+                <div className={`w-full h-full flex items-center justify-center ${project.accent || "bg-gradient-to-br from-black to-zinc-800"}`}>
+                  <div
+                    className="absolute inset-0 opacity-10"
+                    style={{
+                      backgroundImage: "repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  />
+                  <span className="font-[family-name:var(--font-sora)] text-white/50 text-xl md:text-2xl font-bold uppercase tracking-widest z-10">
+                    Görsel Yok
+                  </span>
                 </div>
-                <p className="text-black/40 text-xs truncate mt-0.5">{project.description}</p>
-                <div className="flex flex-wrap gap-1.5 mt-2">
-                  {project.tech.map((t) => (
-                    <span key={t} className="text-[10px] font-semibold uppercase tracking-wide text-black/40 bg-black/5 px-2 py-0.5">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              )}
+              {(!project.images || project.images.length === 0) && (
+                <span className="absolute -right-4 -bottom-6 font-[family-name:var(--font-sora)] text-[8rem] md:text-[10rem] font-black text-white/10 select-none leading-none pointer-events-none">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              )}
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Tag ve Featured */}
+            <div className="absolute top-5 left-5 z-10 flex gap-2">
+              <span className="text-xs font-bold uppercase tracking-widest bg-white text-black px-3 py-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] border border-black">
+                {project.tag}
+              </span>
+              {project.featured && (
+                <span className="text-xs font-bold uppercase tracking-widest bg-yellow-500 text-black px-3 py-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] border border-black">
+                  Featured
+                </span>
+              )}
+            </div>
+
+            {/* Admin Aksiyonları (Sağ Üstte) */}
+            <div className="absolute top-5 right-5 z-20 flex flex-col gap-3">
               <Link
                 href={`/projects/${project.slug}`}
                 target="_blank"
-                className="w-9 h-9 flex items-center justify-center border-2 border-black/10 text-black/30 hover:text-black hover:border-black/30 transition-colors"
+                className="w-10 h-10 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
                 title="Önizle"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
               </Link>
               <Link
                 href={`/admin/projects/${project.slug}`}
-                className="w-9 h-9 flex items-center justify-center border-2 border-black/10 text-black/30 hover:text-blue-600 hover:border-blue-600/30 transition-colors"
+                className="w-10 h-10 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-blue-600 hover:text-white transition-colors shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
                 title="Düzenle"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                 </svg>
               </Link>
               <button
                 onClick={() => setDeleteSlug(project.slug)}
-                className="w-9 h-9 flex items-center justify-center border-2 border-black/10 text-black/30 hover:text-red-500 hover:border-red-500/30 transition-colors cursor-pointer"
+                className="w-10 h-10 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-red-600 hover:text-white transition-colors cursor-pointer shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none"
                 title="Sil"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="3 6 5 6 21 6" /><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                 </svg>
               </button>
+            </div>
+
+            {/* İçerik Alanı (Altta sabit) */}
+            <div className="absolute bottom-0 left-0 w-full bg-white border-t-2 border-black p-4 md:p-5 flex flex-col gap-3 z-20">
+              <div className="flex flex-col gap-1">
+                <h3 className="font-[family-name:var(--font-sora)] text-lg font-bold uppercase tracking-tight text-black truncate">
+                  {project.title}
+                </h3>
+                <p className="text-black/50 text-xs leading-relaxed truncate">
+                  {project.description}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {project.tech.slice(0, 4).map((t) => (
+                  <span key={t} className="text-[10px] md:text-xs font-bold uppercase tracking-wide bg-black/5 border border-black/10 text-black/70 px-2 md:px-3 py-1">
+                    {t}
+                  </span>
+                ))}
+                {project.tech.length > 4 && (
+                  <span className="text-[10px] md:text-xs font-bold uppercase tracking-wide bg-black/5 border border-black/10 text-black/70 px-2 md:px-3 py-1">
+                    +{project.tech.length - 4}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         ))}

@@ -93,8 +93,8 @@ export default function AdminQuotes() {
                                         if (quote.status === "Yeni") handleUpdateStatus(quote._id, "Okundu");
                                     }}
                                     className={`text-left p-5 border-2 transition-all cursor-pointer ${selectedQuote?._id === quote._id
-                                            ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
-                                            : "bg-white text-black border-black/20 hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
+                                        ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
+                                        : "bg-white text-black border-black/20 hover:border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
                                         }`}
                                 >
                                     <div className="flex items-start justify-between mb-3">
@@ -152,21 +152,21 @@ export default function AdminQuotes() {
                             </div>
 
                             <div className="grid grid-cols-2 gap-6 mb-8">
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">Hizmet Alanı</span>
-                                    <span className="text-sm font-semibold">{selectedQuote.service}</span>
+                                <div className="flex flex-col gap-1 border-b-2 border-black/5 pb-2">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">Hizmet Alanı</span>
+                                    <span className="text-sm font-bold text-black">{selectedQuote.service}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">Seçilen Paket</span>
-                                    <span className="text-sm font-semibold">{selectedQuote.package}</span>
+                                <div className="flex flex-col gap-1 border-b-2 border-black/5 pb-2">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">Seçilen Paket</span>
+                                    <span className="text-sm font-bold text-black">{selectedQuote.package}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">Bütçe</span>
-                                    <span className="text-sm font-semibold">{selectedQuote.budget}</span>
+                                <div className="flex flex-col gap-1 border-b-2 border-black/5 pb-2">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">Bütçe</span>
+                                    <span className="text-sm font-bold text-black">{selectedQuote.budget}</span>
                                 </div>
-                                <div className="flex flex-col gap-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">Zaman Planı</span>
-                                    <span className="text-sm font-semibold">{selectedQuote.timeline}</span>
+                                <div className="flex flex-col gap-1 border-b-2 border-black/5 pb-2">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/50">Zaman Planı</span>
+                                    <span className="text-sm font-bold text-black">{selectedQuote.timeline}</span>
                                 </div>
                             </div>
 
