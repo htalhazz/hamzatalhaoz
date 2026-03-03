@@ -2,14 +2,19 @@
 
 import { motion } from "framer-motion";
 
+import Image from "next/image";
+
 export default function Hero({ onQuoteOpen }) {
   return (
     <section id="home" className="relative bg-black overflow-hidden h-[70vh] sm:h-[75vh] md:h-[95vh] flex flex-col">
       {/* Profil Fotoğrafı */}
       <div className="absolute inset-0 z-0 flex items-start justify-center">
-        <img
+        <Image
           src="/profil.png"
           alt="Hamza Talha"
+          width={800}
+          height={800}
+          priority
           className="w-auto h-[55vh] sm:h-[65vh] md:h-[95vh] object-contain opacity-50 mt-8 md:-mt-16"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
