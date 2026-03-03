@@ -1,26 +1,130 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: #0a0a0a;
+  --color-foreground: #ffffff;
+  --color-accent: #E63626;
+  --color-accent-hover: #cc2e1f;
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-sora);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .scrollbar-red {
+    scrollbar-width: thin;
+    scrollbar-color: #dc2626 transparent;
+  }
+  .scrollbar-red::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+  .scrollbar-red::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-red::-webkit-scrollbar-thumb {
+    background: #dc2626;
+    border-radius: 9999px;
+  }
+  .scrollbar-red::-webkit-scrollbar-thumb:hover {
+    background: #b91c1c;
+  }
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Neon tabela efekti */
+@keyframes neon-flicker-white {
+  0%, 18%, 20%, 22%, 24%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 3px #fff,
+      0 0 8px rgba(255,255,255,0.3);
+  }
+  19% {
+    opacity: 0.15;
+    text-shadow: none;
+  }
+  21% {
+    opacity: 0.1;
+    text-shadow: none;
+  }
+  23% {
+    opacity: 0.2;
+    text-shadow: none;
+  }
+  55% {
+    opacity: 0.1;
+    text-shadow: none;
+  }
+}
+
+@keyframes neon-flicker-red {
+  0%, 16%, 18%, 22%, 24%, 52%, 54%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 3px #dc2626,
+      0 0 10px rgba(220,38,38,0.3);
+  }
+  17% {
+    opacity: 0.1;
+    text-shadow: none;
+  }
+  23% {
+    opacity: 0.15;
+    text-shadow: none;
+  }
+  53% {
+    opacity: 0.1;
+    text-shadow: none;
+  }
+}
+
+.neon-white {
+  color: #fff;
+    text-shadow:
+      0 0 3px #fff,
+      0 0 8px rgba(255,255,255,0.3);
+  animation: neon-flicker-white 3s linear infinite !important;
+}
+
+.neon-red {
+  color: #dc2626;
+  text-shadow:
+    0 0 3px #dc2626,
+    0 0 10px rgba(220,38,38,0.3);
+  animation: neon-flicker-red 4s linear infinite 1s !important;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
 }
