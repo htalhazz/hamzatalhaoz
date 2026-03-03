@@ -87,8 +87,25 @@ export default function QuoteWizard({ isOpen, onClose }) {
     }, 300);
   };
 
-  const handleSubmit = () => {
-    setSubmitted(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Ağ hatası");
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Teklif gönderilirken hata:", error);
+      alert("Teklif gönderilirken bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const canProceedStep0 = formData.service && formData.package;
@@ -202,11 +219,10 @@ export default function QuoteWizard({ isOpen, onClose }) {
                         <button
                           key={s.id}
                           onClick={() => setFormData({ ...formData, service: s.id, package: "" })}
-                          className={`flex flex-col items-center gap-3 p-5 border-2 transition-all cursor-pointer ${
-                            formData.service === s.id
-                              ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
-                              : "bg-white text-black border-black/20 hover:border-black"
-                          }`}
+                          className={`flex flex-col items-center gap-3 p-5 border-2 transition-all cursor-pointer ${formData.service === s.id
+                            ? "bg-black text-white border-black shadow-[4px_4px_0px_0px_rgba(220,38,38,1)]"
+                            : "bg-white text-black border-black/20 hover:border-black"
+                            }`}
                         >
                           {s.icon}
                           <span className="font-[family-name:var(--font-sora)] text-xs font-bold uppercase tracking-wide">
@@ -230,11 +246,10 @@ export default function QuoteWizard({ isOpen, onClose }) {
                           <button
                             key={pkg}
                             onClick={() => setFormData({ ...formData, package: pkg })}
-                            className={`text-left px-5 py-4 border-2 font-semibold text-sm transition-all cursor-pointer ${
-                              formData.package === pkg
-                                ? "bg-red-600 text-white border-red-600"
-                                : "bg-white text-black border-black/20 hover:border-black"
-                            }`}
+                            className={`text-left px-5 py-4 border-2 font-semibold text-sm transition-all cursor-pointer ${formData.package === pkg
+                              ? "bg-red-600 text-white border-red-600"
+                              : "bg-white text-black border-black/20 hover:border-black"
+                              }`}
                           >
                             {pkg}
                           </button>
@@ -278,11 +293,10 @@ export default function QuoteWizard({ isOpen, onClose }) {
                         <button
                           key={b}
                           onClick={() => setFormData({ ...formData, budget: b })}
-                          className={`px-4 py-3 border-2 text-sm font-semibold transition-all cursor-pointer ${
-                            formData.budget === b
-                              ? "bg-black text-white border-black"
-                              : "bg-white text-black border-black/20 hover:border-black"
-                          }`}
+                          className={`px-4 py-3 border-2 text-sm font-semibold transition-all cursor-pointer ${formData.budget === b
+                            ? "bg-black text-white border-black"
+                            : "bg-white text-black border-black/20 hover:border-black"
+                            }`}
                         >
                           {b}
                         </button>
@@ -299,11 +313,10 @@ export default function QuoteWizard({ isOpen, onClose }) {
                         <button
                           key={t}
                           onClick={() => setFormData({ ...formData, timeline: t })}
-                          className={`px-4 py-3 border-2 text-sm font-semibold transition-all cursor-pointer ${
-                            formData.timeline === t
-                              ? "bg-black text-white border-black"
-                              : "bg-white text-black border-black/20 hover:border-black"
-                          }`}
+                          className={`px-4 py-3 border-2 text-sm font-semibold transition-all cursor-pointer ${formData.timeline === t
+                            ? "bg-black text-white border-black"
+                            : "bg-white text-black border-black/20 hover:border-black"
+                            }`}
                         >
                           {t}
                         </button>
@@ -400,11 +413,10 @@ export default function QuoteWizard({ isOpen, onClose }) {
           <div className="flex items-center justify-between p-6 border-t-2 border-black">
             <button
               onClick={() => step > 0 && setStep(step - 1)}
-              className={`font-bold text-sm uppercase tracking-wide px-6 py-3 border-3 border-black bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none transition-all cursor-pointer ${
-                step === 0
-                  ? "opacity-40 pointer-events-none"
-                  : "hover:bg-black hover:text-white"
-              }`}
+              className={`font-bold text-sm uppercase tracking-wide px-6 py-3 border-3 border-black bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:shadow-none transition-all cursor-pointer ${step === 0
+                ? "opacity-40 pointer-events-none"
+                : "hover:bg-black hover:text-white"
+                }`}
             >
               Geri
             </button>
@@ -420,10 +432,20 @@ export default function QuoteWizard({ isOpen, onClose }) {
             ) : (
               <button
                 onClick={handleSubmit}
-                disabled={!canProceedStep2}
-                className="bg-red-600 text-white font-bold text-sm uppercase tracking-wide px-8 py-3 border-2 border-red-600 hover:bg-black hover:border-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none cursor-pointer disabled:opacity-30 disabled:pointer-events-none"
+                disabled={!canProceedStep2 || isLoading}
+                className="bg-red-600 text-white font-bold text-sm uppercase tracking-wide px-8 py-3 border-2 border-red-600 hover:bg-black hover:border-black transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none cursor-pointer disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center gap-2"
               >
-                Teklif Gönder
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Gönderiliyor...
+                  </>
+                ) : (
+                  "Teklif Gönder"
+                )}
               </button>
             )}
           </div>
